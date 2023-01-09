@@ -40,13 +40,18 @@ const AddCategoryForm = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
 
-  input {
-    border: 1px solid rgba(150, 150, 150, 0.7);
-    border-radius: 5px;
-    width: 90%;
-    height: 45px;
-    padding: 10px;
+const AddCategoryInput = styled.input`
+  all: unset;
+  border: 1px solid rgba(150, 150, 150, 0.7);
+  background-color: white;
+  border-radius: 5px;
+  width: 90%;
+  height: 30px;
+  padding: 10px;
+  &:focus {
+    border: 1px solid tomato;
   }
 `;
 
@@ -93,7 +98,7 @@ function AddCategory() {
       <AddCategoryContainer>
         <AddCategoryTitle>Create New Category</AddCategoryTitle>
         <AddCategoryForm onSubmit={handleSubmit(onValid)}>
-          <input
+          <AddCategoryInput
             {...register("category", { required: true })}
             type="text"
             placeholder="Add a category name"

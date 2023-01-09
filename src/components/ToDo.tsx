@@ -3,19 +3,58 @@ import styled from "styled-components";
 import { Categories, IToDo, newCategoryState, toDoState } from "../atoms";
 
 const ToDos = styled.li`
-  display: flex;
+  display: grid;
   padding: 10px;
   border: 1px solid rgba(150, 150, 150, 1);
   border-radius: 5px;
   width: 100%;
-  justify-content: space-between;
+  grid-template-columns: 9fr 1fr;
+  margin-bottom: 10px;
+  &:hover {
+    background-color: rgba(150, 150, 150, 0.3);
+  }
 `;
 
 const ToDoText = styled.span`
   margin-right: 20px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
 `;
 
-const ToDoButtons = styled.div``;
+const ToDoCategorySelect = styled.select`
+  all: unset;
+  display: flex;
+  width: 60px;
+  height: 30px;
+  margin-right: 10px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding-left: 5px;
+  background-color: ${(props) => props.theme.bgColor};
+  &:hover {
+    border: 1px solid tomato;
+  }
+`;
+
+const ToDoButtons = styled.div`
+  display: flex;
+`;
+
+const DeleteToDoButton = styled.button`
+  all: unset;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 5px;
+  border: 1px solid white;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid tomato;
+  }
+`;
 
 function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
@@ -55,7 +94,7 @@ function ToDo({ text, category, id }: IToDo) {
     <ToDos>
       <ToDoText>{text}</ToDoText>
       <ToDoButtons>
-        <select onInput={onInput} defaultValue={category}>
+        <ToDoCategorySelect onInput={onInput} defaultValue={category}>
           <option value={Categories.TO_DO}>To Do</option>
           <option value={Categories.DOING}>Doing</option>
           <option value={Categories.DONE}>Done</option>
@@ -65,8 +104,8 @@ function ToDo({ text, category, id }: IToDo) {
                 {newCat}
               </option>
             ))}
-        </select>
-        <button onClick={handleDelete}>X</button>
+        </ToDoCategorySelect>
+        <DeleteToDoButton onClick={handleDelete}>X</DeleteToDoButton>
       </ToDoButtons>
     </ToDos>
   );

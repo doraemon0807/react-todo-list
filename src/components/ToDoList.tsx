@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import CreateToDo from "./CreateToDo";
-import { useRecoilValue } from "recoil";
-import { addCategoryState, toDoSelector } from "../atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { addCategoryState, categoryState, toDoSelector } from "../atoms";
 import ToDo from "./ToDo";
 import Category from "./Category";
 import styled from "styled-components";
@@ -37,7 +38,12 @@ const ToDoBody = styled.div`
 
 function ToDoList() {
   const toDos = useRecoilValue(toDoSelector);
+  const setCategory = useSetRecoilState(categoryState);
   const addCategoryActive = useRecoilValue(addCategoryState);
+
+  useEffect(() => {
+    setCategory("TO_DO");
+  }, []);
 
   return (
     <Wrapper>
@@ -48,9 +54,9 @@ function ToDoList() {
         <CreateToDo />
       </ToDoHeader>
       <ToDoBody>
-        {toDos?.map((toDo) => (
-          <ToDo key={toDo.id} {...toDo} />
-        ))}
+        {toDos?.map((toDo) => {
+          return <ToDo key={toDo.id} {...toDo} />;
+        })}
       </ToDoBody>
       {addCategoryActive && <AddCategory />}
     </Wrapper>

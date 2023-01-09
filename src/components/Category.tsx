@@ -10,11 +10,15 @@ import {
 const AddCategoryBtn = styled.button`
   all: unset;
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 30px;
   height: 30px;
   margin-right: 10px;
   cursor: pointer;
   fill: white;
+  place-self: center;
+
   &:hover {
     fill: tomato;
   }
@@ -30,7 +34,12 @@ const AddCategorySelect = styled.select`
   justify-content: center;
   align-items: center;
   border: 1px solid white;
+  border-radius: 5px;
   padding-left: 5px;
+  background-color: ${(props) => props.theme.bgColor};
+  &:hover {
+    border: 1px solid tomato;
+  }
 `;
 
 function Category() {
