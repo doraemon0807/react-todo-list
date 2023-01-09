@@ -15,12 +15,18 @@ export enum Categories {
 export interface IToDo {
   text: string;
   id: number;
-  category: Categories;
+  category: string;
 }
 
-export const categoryState = atom<Categories>({
+export const categoryState = atom({
   key: "category",
-  default: Categories.TO_DO,
+  default: "",
+});
+
+export const newCategoryState = atom<string[]>({
+  key: "newCategory",
+  default: [],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const toDoState = atom<IToDo[]>({
@@ -40,5 +46,10 @@ export const toDoSelector = selector({
 
 export const isDarkAtom = atom({
   key: "isDark",
+  default: false,
+});
+
+export const addCategoryState = atom<boolean>({
+  key: "addCategory",
   default: false,
 });

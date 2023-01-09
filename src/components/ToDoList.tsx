@@ -1,28 +1,59 @@
 import CreateToDo from "./CreateToDo";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  Categories,
-  categoryState,
-  IToDo,
-  toDoSelector,
-  toDoState,
-} from "../atoms";
+import { useRecoilValue } from "recoil";
+import { addCategoryState, toDoSelector } from "../atoms";
 import ToDo from "./ToDo";
 import Category from "./Category";
+import styled from "styled-components";
+import AddCategory from "./AddCategory";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  hr {
+    width: 90vw;
+  }
+`;
+
+const Title = styled.h1`
+  font-size: 48px;
+`;
+
+const ToDoHeader = styled.div`
+  display: flex;
+  margin: 20px 0;
+  width: 50vw;
+  justify-content: center;
+`;
+
+const ToDoBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid tomato;
+  border-radius: 5px;
+  padding: 20px;
+  width: 40vw;
+`;
 
 function ToDoList() {
   const toDos = useRecoilValue(toDoSelector);
+  const addCategoryActive = useRecoilValue(addCategoryState);
 
   return (
-    <div>
-      <h1>To Dos</h1>
+    <Wrapper>
+      <Title>To Dos</Title>
       <hr />
-      <Category />
-      <CreateToDo />
-      {toDos?.map((toDo) => (
-        <ToDo key={toDo.id} {...toDo} />
-      ))}
-    </div>
+      <ToDoHeader>
+        <Category />
+        <CreateToDo />
+      </ToDoHeader>
+      <ToDoBody>
+        {toDos?.map((toDo) => (
+          <ToDo key={toDo.id} {...toDo} />
+        ))}
+      </ToDoBody>
+      {addCategoryActive && <AddCategory />}
+    </Wrapper>
   );
 }
 

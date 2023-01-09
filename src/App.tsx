@@ -35,7 +35,11 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
   line-height: 1;
+  padding: 20px;
 }
+button {
+    cursor: pointer;
+  }
 menu, ol, ul {
   list-style: none;
 }

@@ -1,12 +1,29 @@
-import { useSetRecoilState } from "recoil";
-import { Categories, IToDo, toDoState } from "../atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import styled from "styled-components";
+import { Categories, IToDo, newCategoryState, toDoState } from "../atoms";
+
+const ToDos = styled.li`
+  display: flex;
+  padding: 10px;
+  border: 1px solid rgba(150, 150, 150, 1);
+  border-radius: 5px;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+const ToDoText = styled.span`
+  margin-right: 20px;
+`;
+
+const ToDoButtons = styled.div``;
 
 function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
+  const newCategory = useRecoilValue(newCategoryState);
 
-  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
     const {
-      currentTarget: { name },
+      currentTarget: { value },
     } = event;
     setToDos((oldToDos) => {
       //Method 1:
@@ -20,9 +37,9 @@ function ToDo({ text, category, id }: IToDo) {
       //   return newToDos;
 
       // Method 2:
-      const newToDos = oldToDos.map((toDo) =>
-        toDo.id === id ? { ...toDo, category: name as IToDo["category"] } : toDo
-      );
+      const newToDos = oldToDos.map((toDo) => {
+        return toDo.id === id ? { ...toDo, category: value } : toDo;
+      });
       return newToDos;
     });
   };
@@ -35,25 +52,23 @@ function ToDo({ text, category, id }: IToDo) {
   };
 
   return (
-    <li>
-      <span>{text}</span>
-      {category !== Categories.DOING && (
-        <button name={Categories.DOING} onClick={onClick}>
-          Doing
-        </button>
-      )}
-      {category !== Categories.TO_DO && (
-        <button name={Categories.TO_DO} onClick={onClick}>
-          To Do
-        </button>
-      )}
-      {category !== Categories.DONE && (
-        <button name={Categories.DONE} onClick={onClick}>
-          Done
-        </button>
-      )}
-      <button onClick={handleDelete}>X</button>
-    </li>
+    <ToDos>
+      <ToDoText>{text}</ToDoText>
+      <ToDoButtons>
+        <select onInput={onInput} defaultValue={category}>
+          <option value={Categories.TO_DO}>To Do</option>
+          <option value={Categories.DOING}>Doing</option>
+          <option value={Categories.DONE}>Done</option>
+          {newCategory.length !== 0 &&
+            newCategory.map((newCat) => (
+              <option key={newCat} value={newCat}>
+                {newCat}
+              </option>
+            ))}
+        </select>
+        <button onClick={handleDelete}>X</button>
+      </ToDoButtons>
+    </ToDos>
   );
 }
 
